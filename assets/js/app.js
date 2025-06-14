@@ -68,8 +68,9 @@ async function loadClimbingData() {
 }
 
 function processData() {
-    // Define successful ascent types
-    const successfulAscentTypes = ['Red point', 'Onsight', 'Flash', 'Send'];
+    // Define successful ascent types for different climbing styles
+    const successfulSportTypes = ['Red point', 'Onsight', 'Flash'];
+    const successfulBoulderTypes = ['Flash', 'Send'];
     
     // Filter out indoor gyms, invalid entries, unsuccessful attempts, and multi-pitch routes
     const filteredData = climbingData.filter(row => {
@@ -89,13 +90,19 @@ function processData() {
             return false;
         }
         
-        // Only include successful ascent types
-        if (!successfulAscentTypes.includes(ascentType)) {
+        // Only include valid grades and gear styles
+        if (!routeGrade || (gearStyle !== 'Sport' && gearStyle !== 'Boulder')) {
             return false;
         }
         
-        // Only include valid grades and gear styles
-        return routeGrade && (gearStyle === 'Sport' || gearStyle === 'Boulder');
+        // Check successful ascent types based on climbing style
+        if (gearStyle === 'Sport') {
+            return successfulSportTypes.includes(ascentType);
+        } else if (gearStyle === 'Boulder') {
+            return successfulBoulderTypes.includes(ascentType);
+        }
+        
+        return false;
     });
 
     // Separate sport and boulder data

@@ -128,9 +128,9 @@ function updateStats() {
     const hardestBoulder = getHardestGrade(boulderData, BOULDER_GRADES);
     document.getElementById('hardest-boulder').textContent = hardestBoulder || 'N/A';
 
-    // Countries count
-    const countries = new Set([...sportData, ...boulderData].map(row => row['Country']));
-    document.getElementById('countries-count').textContent = countries.size;
+    // Unique crags count
+    const uniqueCrags = new Set([...sportData, ...boulderData].map(row => row['Crag Name']));
+    document.getElementById('unique-crags').textContent = uniqueCrags.size;
 
     // Last updated
     const lastUpdated = new Date().toLocaleDateString();
@@ -412,18 +412,58 @@ function createRouteItem(route) {
     
     const ascentClass = ascentType.toLowerCase().replace(/\s+/g, '');
     
+    // Convert star text to visual stars
+    const renderStars = (starText) => {
+        if (!starText) return '';
+        
+        // Count the number of stars (asterisks)
+        const starCount = (starText.match(/\*/g) || []).length;
+        if (starCount === 0) return '';
+        
+        // Create filled stars
+        const filledStars = '★'.repeat(starCount);
+        // Create empty stars to make it 3 total (common climbing rating system)
+        const emptyStars = starCount < 3 ? `<span class="empty-star">${'☆'.repeat(3 - starCount)}</span>` : '';
+        
+        const starLabel = starCount === 1 ? '1 star' : `${starCount} stars`;
+        return `<span class="route-stars" title="${starLabel} - Route quality rating">${filledStars}${emptyStars}</span>`;
+    };
+    
+    // Get ascent type icon based on the legend
+    const getAscentIcon = (ascentType) => {
+        const iconMap = {
+            'Red point': '🔴',
+            'Onsight': '👁️',
+            'Flash': '⚡️',
+            'Send': '✅'
+        };
+        return iconMap[ascentType] || '🧗';
+    };
+    
     return `
         <div class="route-item ${ascentClass}">
             <div class="route-info">
-                <div class="route-name">${routeName}</div>
+                <div class="route-header">
+                    <div class="route-name-container">
+                        <span class="ascent-icon" title="${ascentType}">${getAscentIcon(ascentType)}</span>
+                        <span class="route-name">${routeName}</span>
+                    </div>
+                </div>
                 <div class="route-details">
-                    <span><i class="fas fa-map-marker-alt"></i> ${cragName}, ${country}</span>
-                    <span><i class="fas fa-calendar"></i> ${date}</span>
-                    <span><i class="fas fa-climbing"></i> ${ascentType}</span>
-                    ${stars ? `<span><i class="fas fa-star"></i> ${stars}</span>` : ''}
+                    <span class="route-detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${cragName}, ${country}</span>
+                    </span>
+                    <span class="route-detail-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>${date}</span>
+                    </span>
                 </div>
             </div>
-            <div class="route-grade">${grade}</div>
+            <div class="route-grade-container">
+                <div class="route-grade">${grade}</div>
+                ${renderStars(stars)}
+            </div>
         </div>
     `;
 }

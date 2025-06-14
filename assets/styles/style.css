@@ -244,15 +244,17 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 16px;
-    background: rgba(0, 0, 0, 0.02);
+    background: rgba(255, 255, 255, 0.7);
     border-radius: 12px;
     border-left: 4px solid transparent;
+    border: 1px solid rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
 }
 
 .route-item:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.9);
     transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .route-item.onsight {
@@ -275,10 +277,45 @@ body {
     flex: 1;
 }
 
+.route-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.route-name-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.ascent-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
 .route-name {
     font-weight: 600;
     color: #2d3748;
-    margin-bottom: 4px;
+    flex: 1;
+}
+
+.route-stars {
+    font-size: 0.9rem;
+    color: #ffd700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    transition: transform 0.2s ease;
+    text-align: center;
+}
+
+.route-stars:hover {
+    transform: scale(1.1);
+}
+
+.route-stars .empty-star {
+    color: #e2e8f0;
 }
 
 .route-details {
@@ -287,6 +324,35 @@ body {
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
+    align-items: center;
+}
+
+.route-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    max-width: 200px;
+}
+
+.route-detail-item i {
+    flex-shrink: 0;
+    width: 12px;
+    text-align: center;
+    opacity: 0.7;
+}
+
+.route-detail-item span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.route-grade-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
 }
 
 .route-grade {
@@ -423,8 +489,29 @@ body {
         gap: 8px;
     }
     
+    .route-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .route-name-container {
+        width: 100%;
+    }
+    
+    .route-grade-container {
+        align-self: flex-end;
+    }
+    
     .route-details {
         gap: 8px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .route-detail-item {
+        width: 100%;
+        max-width: none;
     }
 }
 

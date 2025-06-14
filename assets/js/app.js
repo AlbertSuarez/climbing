@@ -13,11 +13,11 @@ const INDOOR_GYMS = [
 
 // Grade conversion for sorting
 const SPORT_GRADES = {
-    '4': 1, '4+': 2, '5a': 3, '5a+': 4, '5b': 5, '5b+': 6, '5c': 7, '5c+': 8,
-    '6a': 9, '6a+': 10, '6b': 11, '6b+': 12, '6c': 13, '6c+': 14,
-    '7a': 15, '7a+': 16, '7b': 17, '7b+': 18, '7c': 19, '7c+': 20,
-    '8a': 21, '8a+': 22, '8b': 23, '8b+': 24, '8c': 25, '8c+': 26,
-    '9a': 27, '9a+': 28, '9b': 29, '9b+': 30, '9c': 31, '9c+': 32
+    '4': 1, '4+': 2, '5': 3, '5+': 4,
+    '6a': 5, '6a+': 6, '6b': 7, '6b+': 8, '6c': 9, '6c+': 10,
+    '7a': 11, '7a+': 12, '7b': 13, '7b+': 14, '7c': 15, '7c+': 16,
+    '8a': 17, '8a+': 18, '8b': 19, '8b+': 20, '8c': 21, '8c+': 22,
+    '9a': 23, '9a+': 24, '9b': 25, '9b+': 26, '9c': 27, '9c+': 28
 };
 
 const BOULDER_GRADES = {
@@ -420,9 +420,18 @@ function cleanGrade(grade) {
     // Remove extra characters and normalize
     let cleanedGrade = grade.replace(/[\/\-\s]/g, '').split(/[,;]/)[0].trim();
     
+    // Normalize sport grades: group lower grades
+    // 5a, 5a+, 5b → 5
+    // 5b+, 5c, 5c+ → 5+
+    if (cleanedGrade === '5a' || cleanedGrade === '5a+' || cleanedGrade === '5b') {
+        cleanedGrade = '5';
+    } else if (cleanedGrade === '5b+' || cleanedGrade === '5c' || cleanedGrade === '5c+') {
+        cleanedGrade = '5+';
+    }
+    
     // Normalize boulder grades: convert Font scale to V-scale equivalents
     // 5A → 5, 5C → 5+
-    if (cleanedGrade === '5A') {
+    else if (cleanedGrade === '5A') {
         cleanedGrade = '5';
     } else if (cleanedGrade === '5C') {
         cleanedGrade = '5+';

@@ -772,4 +772,146 @@ body {
         opacity: 1;
         transform: translateX(0);
     }
+}
+
+/* Scroll Animation Classes */
+.scroll-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-animate.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-animate-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-animate-left.animate-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-animate-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-animate-right.animate-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-animate-scale {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-animate-scale.animate-in {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.scroll-animate-fade {
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+.scroll-animate-fade.animate-in {
+    opacity: 1;
+}
+
+/* Staggered animations for lists */
+.scroll-animate-stagger {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-animate-stagger.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Chart container specific animation */
+.chart-container.scroll-animate {
+    transform: translateY(40px) scale(0.95);
+}
+
+.chart-container.scroll-animate.animate-in {
+    transform: translateY(0) scale(1);
+}
+
+/* Stats card animations */
+.stat-card.scroll-animate-scale {
+    transform: scale(0.9) translateY(20px);
+}
+
+.stat-card.scroll-animate-scale.animate-in {
+    transform: scale(1) translateY(0);
+}
+
+/* Route item animations */
+.route-item.scroll-animate-stagger {
+    transform: translateX(-30px);
+    opacity: 0;
+}
+
+.route-item.scroll-animate-stagger.animate-in {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* Monthly activity animations */
+.month-activity-item.scroll-animate-scale {
+    transform: scale(0.8) rotateY(10deg);
+    opacity: 0;
+}
+
+.month-activity-item.scroll-animate-scale.animate-in {
+    transform: scale(1) rotateY(0deg);
+    opacity: 1;
+}
+
+/* Performance stats animations */
+.grade-performance-item.scroll-animate-stagger {
+    transform: translateX(20px);
+    opacity: 0;
+}
+
+.grade-performance-item.scroll-animate-stagger.animate-in {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* Crag item animations */
+.crag-item.scroll-animate-stagger {
+    transform: translateY(15px);
+    opacity: 0;
+}
+
+.crag-item.scroll-animate-stagger.animate-in {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    .scroll-animate,
+    .scroll-animate-left,
+    .scroll-animate-right,
+    .scroll-animate-scale,
+    .scroll-animate-fade,
+    .scroll-animate-stagger {
+        transition: none;
+        opacity: 1;
+        transform: none;
+    }
 } 

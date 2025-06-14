@@ -39,6 +39,7 @@ async function initializeApp() {
         updateStats();
         createCharts();
         setupEventListeners();
+        initializeScrollAnimations();
         hideLoading();
     } catch (error) {
         console.error('Error initializing app:', error);
@@ -342,10 +343,11 @@ function updateCragList(type) {
                 </div>
             `;
         }).join('');
+        
+        // Ensure content is visible after update
+        ensureContentVisible(container);
     }
 }
-
-
 
 function updateMonthlyActivity() {
     // Sport monthly activity
@@ -396,8 +398,10 @@ function updateMonthlyActivityForType(type) {
                 <div class="month-total">${total} total (${yearsActive} years)</div>
             </div>
         `).join('');
+        
+        // Ensure content is visible after update
+        ensureContentVisible(container);
     }
-
 }
 
 function getHardestGrade(data, gradeSystem) {
@@ -679,6 +683,10 @@ function updateRoutesList(type) {
     // Update recent routes
     const recentContainer = document.getElementById(`${type}-recent-routes`);
     recentContainer.innerHTML = recentRoutes.map(route => createRouteItem(route)).join('');
+    
+    // Ensure content is visible after update
+    ensureContentVisible(hardestContainer);
+    ensureContentVisible(recentContainer);
 }
 
 function createRouteItem(route) {
@@ -797,6 +805,16 @@ function switchClimbingType(type) {
         setTimeout(() => {
             targetSection.classList.remove('fade-in');
         }, 500);
+        
+        // Re-initialize scroll animations for the new section
+        setTimeout(() => {
+            reinitializeAnimationsForActiveSection();
+            
+            // Fallback: ensure all content in the active section is visible
+            setTimeout(() => {
+                ensureContentVisible(targetSection);
+            }, 500);
+        }, 100);
     }
 }
 
@@ -829,18 +847,18 @@ function formatDate(dateString) {
 }
 
 function getAscentTypeColor(ascentType) {
-    const colors = {
-        'onsight': '#48bb78',
-        'redpoint': '#ed8936',
-        'red point': '#ed8936',
-        'flash': '#4299e1',
-        'send': '#9f7aea',
-        'hangdog': '#718096',
-        'hang dog': '#718096',
-        'attempt': '#a0aec0'
-    };
-    
-    return colors[ascentType.toLowerCase()] || '#718096';
+    switch (ascentType) {
+        case 'Onsight':
+            return '#10b981'; // Green
+        case 'Flash':
+            return '#f59e0b'; // Amber
+        case 'Red point':
+            return '#ef4444'; // Red
+        case 'Send':
+            return '#8b5cf6'; // Purple
+        default:
+            return '#6b7280'; // Gray
+    }
 }
 
 // Handle window resize for charts
@@ -850,4 +868,253 @@ window.addEventListener('resize', function() {
             chart.resize();
         }
     });
-}); 
+});
+
+// Scroll Animation Functions
+function initializeScrollAnimations() {
+    // Add animation classes to elements
+    addScrollAnimationClasses();
+    
+    // Create intersection observer
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
+    
+    // Observe all elements with scroll animation classes
+    const animatedElements = document.querySelectorAll('[class*="scroll-animate"]');
+    animatedElements.forEach(element => {
+        observer.observe(element);
+    });
+}
+
+function addScrollAnimationClasses() {
+    // Stats cards - scale animation with stagger
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach((card, index) => {
+        card.classList.add('scroll-animate-scale');
+        card.style.transitionDelay = `${index * 0.1}s`;
+    });
+    
+    // Section headers - fade in from top
+    const sectionHeaders = document.querySelectorAll('.section-header');
+    sectionHeaders.forEach(header => {
+        header.classList.add('scroll-animate');
+    });
+    
+    // Chart containers - scale and slide up
+    const chartContainers = document.querySelectorAll('.chart-container');
+    chartContainers.forEach((container, index) => {
+        container.classList.add('scroll-animate');
+        container.style.transitionDelay = `${index * 0.2}s`;
+    });
+    
+    // Stats containers - slide from alternating sides
+    const statsContainers = document.querySelectorAll('.stats-container');
+    statsContainers.forEach((container, index) => {
+        if (index % 2 === 0) {
+            container.classList.add('scroll-animate-left');
+        } else {
+            container.classList.add('scroll-animate-right');
+        }
+        container.style.transitionDelay = `${index * 0.15}s`;
+    });
+    
+    // Route containers - slide up
+    const routeContainers = document.querySelectorAll('.routes-container');
+    routeContainers.forEach(container => {
+        container.classList.add('scroll-animate');
+    });
+    
+    // Toggle buttons - fade in
+    const toggleContainer = document.querySelector('.toggle-container');
+    if (toggleContainer) {
+        toggleContainer.classList.add('scroll-animate-fade');
+    }
+    
+    // Footer - slide up
+    const footer = document.querySelector('.footer');
+    if (footer) {
+        footer.classList.add('scroll-animate');
+    }
+}
+
+function handleIntersection(entries, observer) {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Add animation class
+            entry.target.classList.add('animate-in');
+            
+            // Handle special cases for lists and grids
+            if (entry.target.classList.contains('routes-container')) {
+                animateRouteItems(entry.target);
+            } else if (entry.target.classList.contains('stats-container')) {
+                animateStatsContent(entry.target);
+            }
+            
+            // Stop observing this element
+            observer.unobserve(entry.target);
+        }
+    });
+}
+
+function animateRouteItems(container) {
+    const routeItems = container.querySelectorAll('.route-item');
+    routeItems.forEach((item, index) => {
+        // Remove any existing animation classes first
+        item.classList.remove('scroll-animate-stagger', 'animate-in');
+        item.style.transitionDelay = '';
+        
+        // Add animation class
+        item.classList.add('scroll-animate-stagger');
+        item.style.transitionDelay = `${index * 0.1}s`;
+        
+        // Trigger animation after a short delay
+        setTimeout(() => {
+            item.classList.add('animate-in');
+        }, 100 + (index * 50));
+    });
+}
+
+function animateStatsContent(container) {
+    // Animate grade performance items
+    const gradeItems = container.querySelectorAll('.grade-performance-item');
+    gradeItems.forEach((item, index) => {
+        // Remove any existing animation classes first
+        item.classList.remove('scroll-animate-stagger', 'animate-in');
+        item.style.transitionDelay = '';
+        
+        item.classList.add('scroll-animate-stagger');
+        item.style.transitionDelay = `${index * 0.05}s`;
+        setTimeout(() => {
+            item.classList.add('animate-in');
+        }, 200 + (index * 30));
+    });
+    
+    // Animate crag items
+    const cragItems = container.querySelectorAll('.crag-item');
+    cragItems.forEach((item, index) => {
+        // Remove any existing animation classes first
+        item.classList.remove('scroll-animate-stagger', 'animate-in');
+        item.style.transitionDelay = '';
+        
+        item.classList.add('scroll-animate-stagger');
+        item.style.transitionDelay = `${index * 0.05}s`;
+        setTimeout(() => {
+            item.classList.add('animate-in');
+        }, 300 + (index * 30));
+    });
+    
+    // Animate monthly activity items
+    const monthItems = container.querySelectorAll('.month-activity-item');
+    monthItems.forEach((item, index) => {
+        // Remove any existing animation classes first
+        item.classList.remove('scroll-animate-scale', 'animate-in');
+        item.style.transitionDelay = '';
+        
+        item.classList.add('scroll-animate-scale');
+        item.style.transitionDelay = `${index * 0.05}s`;
+        setTimeout(() => {
+            item.classList.add('animate-in');
+        }, 400 + (index * 40));
+    });
+}
+
+// Helper function to ensure content is visible
+function ensureContentVisible(container) {
+    // Remove animation classes from all child elements to make them visible
+    const allElements = container.querySelectorAll('*');
+    allElements.forEach(element => {
+        if (element.classList.contains('scroll-animate') || 
+            element.classList.contains('scroll-animate-stagger') ||
+            element.classList.contains('scroll-animate-scale') ||
+            element.classList.contains('scroll-animate-left') ||
+            element.classList.contains('scroll-animate-right') ||
+            element.classList.contains('scroll-animate-fade')) {
+            
+            // If element doesn't have animate-in class, add it to make it visible
+            if (!element.classList.contains('animate-in')) {
+                element.classList.add('animate-in');
+            }
+        }
+    });
+}
+
+// Re-initialize animations when switching between sport and boulder
+function reinitializeAnimationsForActiveSection() {
+    const activeSection = document.querySelector('.climbing-section.active');
+    if (!activeSection) return;
+    
+    // Remove existing animation classes and delays from all elements in the active section
+    const animatedElements = activeSection.querySelectorAll('[class*="scroll-animate"]');
+    animatedElements.forEach(element => {
+        element.classList.remove('animate-in');
+        element.style.transitionDelay = '';
+        // Remove all scroll animation classes
+        element.classList.remove('scroll-animate', 'scroll-animate-left', 'scroll-animate-right', 'scroll-animate-scale', 'scroll-animate-fade', 'scroll-animate-stagger');
+    });
+    
+    // Clear any existing timeouts
+    setTimeout(() => {
+        // Re-add animation classes for containers that are in viewport
+        const containers = activeSection.querySelectorAll('.stats-container, .chart-container, .routes-container');
+        containers.forEach((container, index) => {
+            // Add appropriate animation class
+            if (container.classList.contains('stats-container')) {
+                if (index % 2 === 0) {
+                    container.classList.add('scroll-animate-left');
+                } else {
+                    container.classList.add('scroll-animate-right');
+                }
+            } else {
+                container.classList.add('scroll-animate');
+            }
+            
+            // If element is in viewport, animate it immediately
+            if (isElementInViewport(container)) {
+                container.style.transitionDelay = `${index * 0.1}s`;
+                setTimeout(() => {
+                    container.classList.add('animate-in');
+                    
+                    // Handle content within containers
+                    if (container.classList.contains('routes-container')) {
+                        animateRouteItems(container);
+                    } else if (container.classList.contains('stats-container')) {
+                        animateStatsContent(container);
+                    }
+                }, 50 + (index * 100));
+            } else {
+                // For elements not in viewport, set up intersection observer
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animate-in');
+                            
+                            if (entry.target.classList.contains('routes-container')) {
+                                animateRouteItems(entry.target);
+                            } else if (entry.target.classList.contains('stats-container')) {
+                                animateStatsContent(entry.target);
+                            }
+                            
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+                
+                observer.observe(container);
+            }
+        });
+    }, 50);
+}
+
+function isElementInViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+} 

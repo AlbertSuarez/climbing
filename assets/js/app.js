@@ -22,10 +22,9 @@ const SPORT_GRADES = {
 
 const BOULDER_GRADES = {
     '3': 1, '3+': 2, '4': 3, '4+': 4, '5': 5, '5+': 6,
-    '5A': 7, '5B': 8, '5C': 9,
-    '6A': 10, '6A+': 11, '6B': 12, '6B+': 13, '6C': 14, '6C+': 15,
-    '7A': 16, '7A+': 17, '7B': 18, '7B+': 19, '7C': 20, '7C+': 21,
-    '8A': 22, '8A+': 23, '8B': 24, '8B+': 25, '8C': 26, '8C+': 27
+    '6A': 7, '6A+': 8, '6B': 9, '6B+': 10, '6C': 11, '6C+': 12,
+    '7A': 13, '7A+': 14, '7B': 15, '7B+': 16, '7C': 17, '7C+': 18,
+    '8A': 19, '8A+': 20, '8B': 21, '8B+': 22, '8C': 23, '8C+': 24
 };
 
 // Initialize the application
@@ -419,7 +418,17 @@ function getHardestGrade(data, gradeSystem) {
 function cleanGrade(grade) {
     if (!grade) return '';
     // Remove extra characters and normalize
-    return grade.replace(/[\/\-\s]/g, '').split(/[,;]/)[0].trim();
+    let cleanedGrade = grade.replace(/[\/\-\s]/g, '').split(/[,;]/)[0].trim();
+    
+    // Normalize boulder grades: convert Font scale to V-scale equivalents
+    // 5A → 5, 5C → 5+
+    if (cleanedGrade === '5A') {
+        cleanedGrade = '5';
+    } else if (cleanedGrade === '5C') {
+        cleanedGrade = '5+';
+    }
+    
+    return cleanedGrade;
 }
 
 function createCharts() {

@@ -366,6 +366,172 @@ body {
     text-align: center;
 }
 
+/* New Stats Containers */
+.stats-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.stats-container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.stats-container.full-width {
+    grid-column: 1 / -1;
+}
+
+.stats-container h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.stats-subtitle {
+    font-size: 0.875rem;
+    color: #718096;
+    margin-bottom: 20px;
+    margin-top: -10px;
+    text-align: center;
+}
+
+/* Grade Performance Styles */
+.grade-performance-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.grade-performance-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.grade-performance-item:last-child {
+    border-bottom: none;
+}
+
+.grade-badge {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    min-width: 50px;
+    text-align: center;
+}
+
+.performance-stats {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.performance-rate {
+    font-weight: 700;
+    color: #667eea;
+    font-size: 1.125rem;
+}
+
+.performance-count {
+    font-size: 0.875rem;
+    color: #718096;
+}
+
+/* Crag Stats Styles */
+
+
+.crag-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.crag-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.crag-item:last-child {
+    border-bottom: none;
+}
+
+.crag-name {
+    font-weight: 500;
+    color: #2d3748;
+    flex: 1;
+}
+
+.crag-count {
+    font-weight: 600;
+    color: #667eea;
+    font-size: 0.875rem;
+    background: rgba(102, 126, 234, 0.1);
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+/* Monthly Activity Styles */
+.monthly-activity-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.month-activity-item {
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.month-activity-item:hover {
+    background: rgba(102, 126, 234, 0.2);
+    transform: translateY(-2px);
+}
+
+.month-name {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 0.875rem;
+    margin-bottom: 8px;
+}
+
+.month-average {
+    font-weight: 700;
+    color: #667eea;
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+}
+
+.month-total {
+    font-size: 0.75rem;
+    color: #718096;
+}
+
 /* Footer */
 .footer {
     margin-top: 60px;
@@ -503,6 +669,24 @@ body {
         align-self: flex-end;
     }
     
+    .stats-container {
+        padding: 20px;
+    }
+    
+
+    
+    .monthly-activity-grid {
+        gap: 12px;
+    }
+    
+    .month-activity-item {
+        padding: 12px;
+    }
+    
+    .performance-stats {
+        gap: 8px;
+    }
+    
     .route-details {
         gap: 8px;
         flex-direction: column;
@@ -541,6 +725,10 @@ body {
     
     .content-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .monthly-activity-grid {
+        gap: 10px;
     }
 }
 

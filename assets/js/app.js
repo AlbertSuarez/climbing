@@ -4,6 +4,7 @@ let sportData = [];
 let boulderData = [];
 let charts = {};
 
+
 // Indoor gyms to exclude (as mentioned in README)
 const INDOOR_GYMS = [
     'Sharma Climbing BCN Gavá',
@@ -136,6 +137,264 @@ function updateStats() {
     const lastUpdated = new Date().toLocaleDateString();
     document.getElementById('last-updated').textContent = lastUpdated;
     
+    // Update new detailed sections
+    updateGradePerformance();
+    updateFavoriteCrags();
+    updateMonthlyActivity();
+}
+
+function updateGradePerformance() {
+    // Sport climbing performance (Onsight or Flash)
+    createPerformanceChart('sport');
+    
+    // Boulder performance (Flash only)
+    createPerformanceChart('boulder');
+}
+
+function createPerformanceChart(type) {
+    const data = type === 'sport' ? sportData : boulderData;
+    const gradeSystem = type === 'sport' ? SPORT_GRADES : BOULDER_GRADES;
+    const canvasId = `${type}-performance-chart`;
+    
+    const gradeStats = {};
+    
+    // Count total attempts and onsight/flash for each grade
+    data.forEach(row => {
+        const grade = cleanGrade(row['Route Grade']);
+        const ascentType = row['Ascent Type'];
+        
+        if (gradeSystem[grade]) {
+            if (!gradeStats[grade]) {
+                gradeStats[grade] = { total: 0, onsightFlash: 0 };
+            }
+            gradeStats[grade].total++;
+            
+            // Check for onsight/flash based on climbing type
+            if (type === 'sport' && (ascentType === 'Onsight' || ascentType === 'Flash')) {
+                gradeStats[grade].onsightFlash++;
+            } else if (type === 'boulder' && ascentType === 'Flash') {
+                gradeStats[grade].onsightFlash++;
+            }
+        }
+    });
+    
+    // Sort grades by difficulty
+    const sortedGrades = Object.keys(gradeStats).sort((a, b) => gradeSystem[a] - gradeSystem[b]);
+    
+    // Prepare data for stacked bar chart
+    const onsightFlashData = sortedGrades.map(grade => gradeStats[grade].onsightFlash);
+    const redpointData = sortedGrades.map(grade => gradeStats[grade].total - gradeStats[grade].onsightFlash);
+    
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) {
+        console.error(`Canvas element not found: ${canvasId}`);
+        return;
+    }
+    const context = ctx.getContext('2d');
+    
+    // Destroy existing chart if it exists
+    if (charts[canvasId]) {
+        charts[canvasId].destroy();
+    }
+    
+    const onsightFlashLabel = type === 'sport' ? 'Onsight/Flash' : 'Flash';
+    const redpointLabel = type === 'sport' ? 'Red point' : 'Send';
+    
+    charts[canvasId] = new Chart(context, {
+        type: 'bar',
+        data: {
+            labels: sortedGrades,
+            datasets: [
+                {
+                    label: onsightFlashLabel,
+                    data: onsightFlashData,
+                    backgroundColor: 'rgba(34, 197, 94, 0.85)',
+                    borderColor: 'rgba(34, 197, 94, 1)',
+                    borderWidth: 1,
+                    borderRadius: function(context) {
+                        const index = context.dataIndex;
+                        const hasRedpoint = redpointData[index] > 0;
+                        return hasRedpoint ? {
+                            topLeft: 0,
+                            topRight: 0,
+                            bottomLeft: 6,
+                            bottomRight: 6
+                        } : 6; // All corners rounded when no redpoint data
+                    },
+                    borderSkipped: false,
+                },
+                {
+                    label: redpointLabel,
+                    data: redpointData,
+                    backgroundColor: 'rgba(239, 68, 68, 0.85)',
+                    borderColor: 'rgba(239, 68, 68, 1)',
+                    borderWidth: 1,
+                    borderRadius: function(context) {
+                        const index = context.dataIndex;
+                        const hasOnsightFlash = onsightFlashData[index] > 0;
+                        return hasOnsightFlash ? {
+                            topLeft: 6,
+                            topRight: 6,
+                            bottomLeft: 0,
+                            bottomRight: 0
+                        } : 6; // All corners rounded when no onsight/flash data
+                    },
+                    borderSkipped: false,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        color: '#718096',
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    titleColor: 'white',
+                    bodyColor: 'white',
+                    borderColor: 'rgba(34, 197, 94, 1)',
+                    borderWidth: 2,
+                    callbacks: {
+                        afterLabel: function(context) {
+                            const gradeIndex = context.dataIndex;
+                            const grade = sortedGrades[gradeIndex];
+                            const stats = gradeStats[grade];
+                            const rate = Math.round((stats.onsightFlash / stats.total) * 100);
+                            return `${onsightFlashLabel} rate: ${rate}% (${stats.onsightFlash}/${stats.total})`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    stacked: true,
+                    ticks: {
+                        color: '#718096'
+                    },
+                    grid: {
+                        display: false
+                    }
+                },
+                y: {
+                    stacked: true,
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1,
+                        color: '#718096'
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function updateFavoriteCrags() {
+    // Sport crags
+    updateCragList('sport');
+    
+    // Boulder crags
+    updateCragList('boulder');
+}
+
+function updateCragList(type) {
+    const data = type === 'sport' ? sportData : boulderData;
+    const cragCounts = {};
+    
+    // Count climbs per crag
+    data.forEach(row => {
+        const crag = row['Crag Name'];
+        if (crag) {
+            cragCounts[crag] = (cragCounts[crag] || 0) + 1;
+        }
+    });
+    
+    // Sort crags by count and take top 7
+    const sortedCrags = Object.entries(cragCounts)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, 7);
+    
+    const containerId = `${type}-favorite-crags`;
+    const container = document.getElementById(containerId);
+    
+    if (container) {
+        container.innerHTML = sortedCrags.map(([crag, count]) => {
+            const cragName = crag.split(',')[0]; // Take only the first part before comma
+            return `
+                <div class="crag-item">
+                    <span class="crag-name">${cragName}</span>
+                    <span class="crag-count">${count}</span>
+                </div>
+            `;
+        }).join('');
+    }
+    
+
+}
+
+
+
+function updateMonthlyActivity() {
+    // Sport monthly activity
+    updateMonthlyActivityForType('sport');
+    
+    // Boulder monthly activity
+    updateMonthlyActivityForType('boulder');
+}
+
+function updateMonthlyActivityForType(type) {
+    const data = type === 'sport' ? sportData : boulderData;
+    const monthCounts = {};
+    const yearCounts = {};
+    
+    // Count climbs per month and track years
+    data.forEach(row => {
+        const date = new Date(row['Ascent Date']);
+        const monthName = date.toLocaleDateString('en-US', { month: 'long' });
+        const year = date.getFullYear();
+        
+        if (!monthCounts[monthName]) {
+            monthCounts[monthName] = 0;
+            yearCounts[monthName] = new Set();
+        }
+        
+        monthCounts[monthName]++;
+        yearCounts[monthName].add(year);
+    });
+    
+    // Calculate averages and sort chronologically
+    const monthOrder = ['January', 'February', 'March', 'April', 'May', 'June', 
+                       'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    const monthAverages = Object.entries(monthCounts).map(([month, total]) => {
+        const yearsActive = yearCounts[month].size;
+        const average = Math.round((total / yearsActive) * 10) / 10;
+        return { month, total, average, yearsActive };
+    }).sort((a, b) => monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month));
+    
+    const containerId = `${type}-monthly-activity`;
+    const container = document.getElementById(containerId);
+    
+    if (container) {
+        container.innerHTML = monthAverages.map(({ month, total, average, yearsActive }) => `
+            <div class="month-activity-item">
+                <div class="month-name">${month}</div>
+                <div class="month-average">${average}</div>
+                <div class="month-total">${total} total (${yearsActive} years)</div>
+            </div>
+        `).join('');
+    }
 
 }
 

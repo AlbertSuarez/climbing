@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="assets/styles/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 </head>
 <body>
     <div class="container">
@@ -96,6 +97,25 @@
                         <h3>Recent Activity</h3>
                         <div id="sport-recent-routes" class="routes-list"></div>
                     </div>
+
+                    <!-- Performance by Grade -->
+                    <div class="chart-container">
+                        <h3><i class="fas fa-trophy"></i> Onsight/Flash Performance by Grade</h3>
+                        <canvas id="sport-performance-chart"></canvas>
+                    </div>
+
+                    <!-- Favorite Crags -->
+                    <div class="stats-container">
+                        <h3><i class="fas fa-map-marker-alt"></i> Favorite Sport Crags</h3>
+                        <div id="sport-favorite-crags" class="crag-list"></div>
+                    </div>
+
+                    <!-- Monthly Activity -->
+                    <div class="stats-container full-width">
+                        <h3><i class="fas fa-calendar-alt"></i> Most Active Months</h3>
+                        <p class="stats-subtitle">Average ascents per month across all years</p>
+                        <div id="sport-monthly-activity" class="monthly-activity-grid"></div>
+                    </div>
                 </div>
             </div>
 
@@ -130,6 +150,25 @@
                         <h3>Recent Activity</h3>
                         <div id="boulder-recent-routes" class="routes-list"></div>
                     </div>
+
+                    <!-- Performance by Grade -->
+                    <div class="chart-container">
+                        <h3><i class="fas fa-trophy"></i> Flash Performance by Grade</h3>
+                        <canvas id="boulder-performance-chart"></canvas>
+                    </div>
+
+                    <!-- Favorite Crags -->
+                    <div class="stats-container">
+                        <h3><i class="fas fa-map-marker-alt"></i> Favorite Boulder Crags</h3>
+                        <div id="boulder-favorite-crags" class="crag-list"></div>
+                    </div>
+
+                    <!-- Monthly Activity -->
+                    <div class="stats-container full-width">
+                        <h3><i class="fas fa-calendar-alt"></i> Most Active Months</h3>
+                        <p class="stats-subtitle">Average ascents per month across all years</p>
+                        <div id="boulder-monthly-activity" class="monthly-activity-grid"></div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -155,6 +194,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
     <script src="assets/js/app.js"></script>
 </body>
 </html> 

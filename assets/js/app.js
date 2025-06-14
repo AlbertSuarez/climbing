@@ -883,10 +883,13 @@ function initializeScrollAnimations() {
     
     const observer = new IntersectionObserver(handleIntersection, observerOptions);
     
-    // Observe all elements with scroll animation classes
-    const animatedElements = document.querySelectorAll('[class*="scroll-animate"]');
+    // Observe all elements with scroll animation classes, but exclude GitHub badge
+    const animatedElements = document.querySelectorAll('[class*="scroll-animate"]:not(.github-badge)');
     animatedElements.forEach(element => {
-        observer.observe(element);
+        // Double check to exclude GitHub badge and its children
+        if (!element.classList.contains('github-badge') && !element.closest('.github-badge')) {
+            observer.observe(element);
+        }
     });
 }
 

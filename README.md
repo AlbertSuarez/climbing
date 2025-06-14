@@ -55,6 +55,16 @@ The website dynamically processes this CSV data to generate statistics, charts, 
 
 Pretty simple. Feel free to fork from this repository and update your [logbook.csv](data/logbook.csv) file to get your stats website!
 
+## Screenshots
+
+![Screenshot 1](docs/screenshot-1.png)
+
+![Screenshot 2](docs/screenshot-2.png)
+
+![Screenshot 3](docs/screenshot-3.png)
+
+![Screenshot 4](docs/screenshot-4.png)
+
 ## Authors
 
 - [Albert Suàrez](https://github.com/AlbertSuarez)

@@ -6,11 +6,12 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     line-height: 1.6;
-    color: #2d3748;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #3a4a3a;
+    background: linear-gradient(135deg, #f7f5f3 0%, #e8e5e1 50%, #ddd8d0 100%);
     min-height: 100vh;
+    font-weight: 400;
 }
 
 .container {
@@ -27,28 +28,29 @@ body {
 
 .hero {
     text-align: center;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    padding: 60px 40px;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
 }
 
 .hero-title {
-    font-size: 3rem;
-    font-weight: 700;
-    color: #2d3748;
+    font-family: 'Crimson Text', serif;
+    font-size: 3.5rem;
+    font-weight: 600;
+    color: #2d3d2d;
     margin-bottom: 16px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .hero-subtitle {
     font-size: 1.25rem;
-    color: #718096;
-    font-weight: 400;
+    color: #5a6b5a;
+    font-weight: 300;
+    letter-spacing: 0.01em;
 }
 
 
@@ -65,18 +67,20 @@ body {
 }
 
 .stat-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 30px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    padding: 32px 24px;
     text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+    border-color: rgba(139, 156, 139, 0.3);
 }
 
 .stat-icon {
@@ -85,16 +89,18 @@ body {
 }
 
 .stat-number {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #2d3748;
+    font-family: 'Crimson Text', serif;
+    font-size: 2.75rem;
+    font-weight: 600;
+    color: #2d3d2d;
     margin-bottom: 8px;
 }
 
 .stat-label {
     font-size: 1rem;
-    color: #718096;
+    color: #5a6b5a;
     font-weight: 500;
+    letter-spacing: 0.02em;
 }
 
 /* Toggle Section */
@@ -106,37 +112,40 @@ body {
 
 .toggle-container {
     display: flex;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 50px;
-    padding: 8px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 6px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .toggle-btn {
+    background: transparent;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 50px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #5a6b5a;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 16px 32px;
-    border: none;
-    background: transparent;
-    border-radius: 40px;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #718096;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    letter-spacing: 0.01em;
 }
 
 .toggle-btn.active {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #8b9c8b 0%, #6b7c6b 100%);
     color: white;
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 16px rgba(107, 124, 107, 0.3);
 }
 
 .toggle-btn:hover:not(.active) {
-    color: #2d3748;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(139, 156, 139, 0.1);
+    color: #2d3d2d;
 }
 
 /* Main Content */
@@ -163,19 +172,22 @@ body {
 }
 
 .section-header h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #2d3748;
+    font-family: 'Crimson Text', serif;
+    font-size: 2.75rem;
+    font-weight: 600;
+    color: #2d3d2d;
     margin-bottom: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 16px;
+    letter-spacing: -0.01em;
 }
 
 .section-header p {
     font-size: 1.125rem;
-    color: #718096;
+    color: #5a6b5a;
+    font-weight: 300;
 }
 
 /* Content Grid */

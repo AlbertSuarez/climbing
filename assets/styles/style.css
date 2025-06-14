@@ -26,10 +26,7 @@ body {
 }
 
 .hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: center;
+    text-align: center;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     border-radius: 20px;
@@ -54,23 +51,7 @@ body {
     font-weight: 400;
 }
 
-.hero-image {
-    position: relative;
-    overflow: hidden;
-    border-radius: 16px;
-    height: 300px;
-}
 
-.hero-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.hero-image:hover img {
-    transform: scale(1.05);
-}
 
 /* Stats Overview */
 .stats-overview {
@@ -602,8 +583,6 @@ body {
     }
     
     .hero {
-        grid-template-columns: 1fr;
-        text-align: center;
         padding: 30px;
     }
     

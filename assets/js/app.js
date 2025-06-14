@@ -128,6 +128,8 @@ function updateStats() {
     // Last updated
     const lastUpdated = new Date().toLocaleDateString();
     document.getElementById('last-updated').textContent = lastUpdated;
+    
+
 }
 
 function getHardestGrade(data, gradeSystem) {
@@ -181,14 +183,19 @@ function createGradeDistributionChart(type) {
     const sortedGrades = Object.keys(gradeCounts).sort((a, b) => gradeSystem[a] - gradeSystem[b]);
     const counts = sortedGrades.map(grade => gradeCounts[grade]);
 
-    const ctx = document.getElementById(canvasId).getContext('2d');
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) {
+        console.error(`Canvas element not found: ${canvasId}`);
+        return;
+    }
+    const context = ctx.getContext('2d');
     
     // Destroy existing chart if it exists
     if (charts[canvasId]) {
         charts[canvasId].destroy();
     }
 
-    charts[canvasId] = new Chart(ctx, {
+    charts[canvasId] = new Chart(context, {
         type: 'bar',
         data: {
             labels: sortedGrades,
@@ -284,14 +291,19 @@ function createProgressionChart(type) {
         });
     });
 
-    const ctx = document.getElementById(canvasId).getContext('2d');
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) {
+        console.error(`Canvas element not found: ${canvasId}`);
+        return;
+    }
+    const context = ctx.getContext('2d');
     
     // Destroy existing chart if it exists
     if (charts[canvasId]) {
         charts[canvasId].destroy();
     }
 
-    charts[canvasId] = new Chart(ctx, {
+    charts[canvasId] = new Chart(context, {
         type: 'line',
         data: {
             datasets: [{
@@ -344,13 +356,6 @@ function createProgressionChart(type) {
                     }
                 },
                 x: {
-                    type: 'time',
-                    time: {
-                        parser: 'YYYY-MM',
-                        displayFormats: {
-                            month: 'MMM YYYY'
-                        }
-                    },
                     ticks: {
                         color: '#718096'
                     },
@@ -419,6 +424,7 @@ function createRouteItem(route) {
 function setupEventListeners() {
     // Toggle between sport and boulder
     const toggleButtons = document.querySelectorAll('.toggle-btn');
+    
     toggleButtons.forEach(button => {
         button.addEventListener('click', function() {
             const type = this.dataset.type;
@@ -432,19 +438,27 @@ function switchClimbingType(type) {
     document.querySelectorAll('.toggle-btn').forEach(btn => {
         btn.classList.remove('active');
     });
-    document.querySelector(`[data-type="${type}"]`).classList.add('active');
+    const activeButton = document.querySelector(`[data-type="${type}"]`);
+    if (activeButton) {
+        activeButton.classList.add('active');
+    }
     
     // Update sections
     document.querySelectorAll('.climbing-section').forEach(section => {
         section.classList.remove('active');
     });
-    document.getElementById(`${type}-section`).classList.add('active');
+    const targetSection = document.getElementById(`${type}-section`);
+    if (targetSection) {
+        targetSection.classList.add('active');
+    }
     
     // Add animation
-    document.getElementById(`${type}-section`).classList.add('fade-in');
-    setTimeout(() => {
-        document.getElementById(`${type}-section`).classList.remove('fade-in');
-    }, 500);
+    if (targetSection) {
+        targetSection.classList.add('fade-in');
+        setTimeout(() => {
+            targetSection.classList.remove('fade-in');
+        }, 500);
+    }
 }
 
 function hideLoading() {

@@ -515,7 +515,7 @@ body {
 
 /* Footer */
 .footer {
-    margin-top: 60px;
+    margin: 60px 0 40px 0;
     padding: 30px 0;
     text-align: center;
     background: rgba(255, 255, 255, 0.95);

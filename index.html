@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Albert's Climbing Stats</title>
+    <link rel="stylesheet" href="assets/styles/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">🧗 Albert's Climbing Journey</h1>
+                    <p class="hero-subtitle">Tracking my rock climbing progression and achievements</p>
+                </div>
+                <div class="hero-image">
+                    <img src="assets/images/climbing-hero.jpg" alt="Rock climbing" />
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Overview -->
+        <section class="stats-overview">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🏔️</div>
+                    <div class="stat-number" id="total-ascents">-</div>
+                    <div class="stat-label">Total Ascents</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-number" id="hardest-sport">-</div>
+                    <div class="stat-label">Hardest Sport</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🪨</div>
+                    <div class="stat-number" id="hardest-boulder">-</div>
+                    <div class="stat-label">Hardest Boulder</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🌍</div>
+                    <div class="stat-number" id="countries-count">-</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Climbing Type Toggle -->
+        <section class="toggle-section">
+            <div class="toggle-container">
+                <button class="toggle-btn active" data-type="sport">
+                    <i class="fas fa-mountain"></i>
+                    Sport Climbing
+                </button>
+                <button class="toggle-btn" data-type="boulder">
+                    <i class="fas fa-cube"></i>
+                    Bouldering
+                </button>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Sport Climbing Section -->
+            <div class="climbing-section active" id="sport-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-mountain"></i> Sport Climbing</h2>
+                    <p>Outdoor sport climbing achievements and progression</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Grade Distribution Chart -->
+                    <div class="chart-container">
+                        <h3>Grade Distribution</h3>
+                        <canvas id="sport-grade-chart"></canvas>
+                    </div>
+
+                    <!-- Progression Chart -->
+                    <div class="chart-container">
+                        <h3>Progression Over Time</h3>
+                        <canvas id="sport-progression-chart"></canvas>
+                    </div>
+
+                    <!-- Hardest Routes -->
+                    <div class="routes-container">
+                        <h3>Hardest Routes</h3>
+                        <div id="sport-hardest-routes" class="routes-list"></div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="routes-container">
+                        <h3>Recent Activity</h3>
+                        <div id="sport-recent-routes" class="routes-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bouldering Section -->
+            <div class="climbing-section" id="boulder-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-cube"></i> Bouldering</h2>
+                    <p>Boulder problems and strength progression</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Grade Distribution Chart -->
+                    <div class="chart-container">
+                        <h3>Grade Distribution</h3>
+                        <canvas id="boulder-grade-chart"></canvas>
+                    </div>
+
+                    <!-- Progression Chart -->
+                    <div class="chart-container">
+                        <h3>Progression Over Time</h3>
+                        <canvas id="boulder-progression-chart"></canvas>
+                    </div>
+
+                    <!-- Hardest Problems -->
+                    <div class="routes-container">
+                        <h3>Hardest Problems</h3>
+                        <div id="boulder-hardest-routes" class="routes-list"></div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="routes-container">
+                        <h3>Recent Activity</h3>
+                        <div id="boulder-recent-routes" class="routes-list"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>Data sourced from <a href="https://www.thecrag.com/climber/albertsuarez" target="_blank">TheCrag</a></p>
+                <p>Last updated: <span id="last-updated">-</span></p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-mountain fa-spin"></i>
+            <p>Loading climbing data...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html> 

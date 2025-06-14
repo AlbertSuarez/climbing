@@ -68,14 +68,29 @@ async function loadClimbingData() {
 }
 
 function processData() {
-    // Filter out indoor gyms and invalid entries
+    // Define successful ascent types
+    const successfulAscentTypes = ['Red point', 'Onsight', 'Flash', 'Send'];
+    
+    // Filter out indoor gyms, invalid entries, unsuccessful attempts, and multi-pitch routes
     const filteredData = climbingData.filter(row => {
         const cragName = row['Crag Name'] || '';
         const routeGrade = row['Route Grade'] || '';
         const gearStyle = row['Route Gear Style'] || '';
+        const ascentType = row['Ascent Type'] || '';
+        const ascentLabel = row['Ascent Label'] || '';
         
         // Exclude indoor gyms
         if (INDOOR_GYMS.some(gym => cragName.includes(gym))) {
+            return false;
+        }
+        
+        // Exclude multi-pitch routes (those with Ascent Label filled)
+        if (ascentLabel.trim() !== '') {
+            return false;
+        }
+        
+        // Only include successful ascent types
+        if (!successfulAscentTypes.includes(ascentType)) {
             return false;
         }
         
@@ -94,7 +109,7 @@ function processData() {
 }
 
 function updateStats() {
-    // Total ascents (excluding indoor)
+    // Total successful ascents (excluding indoor and unsuccessful attempts)
     const totalAscents = sportData.length + boulderData.length;
     document.getElementById('total-ascents').textContent = totalAscents;
 
@@ -231,7 +246,7 @@ function createProgressionChart(type) {
     const gradeSystem = type === 'sport' ? SPORT_GRADES : BOULDER_GRADES;
     const canvasId = `${type}-progression-chart`;
     
-    // Group by month and find hardest grade per month
+    // Group by month and find hardest grade per month (only successful attempts)
     const monthlyProgress = {};
     
     data.forEach(row => {
@@ -240,6 +255,7 @@ function createProgressionChart(type) {
         const grade = cleanGrade(row['Route Grade']);
         const gradeValue = gradeSystem[grade];
         
+        // Only consider successful attempts (already filtered in processData)
         if (gradeValue) {
             if (!monthlyProgress[monthKey] || gradeValue > monthlyProgress[monthKey].value) {
                 monthlyProgress[monthKey] = {

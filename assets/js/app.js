@@ -310,12 +310,17 @@ function updateFavoriteCrags() {
 function updateCragList(type) {
     const data = type === 'sport' ? sportData : boulderData;
     const cragCounts = {};
+    const cragLinks = {};
     
-    // Count climbs per crag
+    // Count climbs per crag and store crag links
     data.forEach(row => {
         const crag = row['Crag Name'];
+        const cragLink = row['Crag Link'];
         if (crag) {
             cragCounts[crag] = (cragCounts[crag] || 0) + 1;
+            if (cragLink && !cragLinks[crag]) {
+                cragLinks[crag] = cragLink;
+            }
         }
     });
     
@@ -330,16 +335,21 @@ function updateCragList(type) {
     if (container) {
         container.innerHTML = sortedCrags.map(([crag, count]) => {
             const cragName = crag.split(',')[0]; // Take only the first part before comma
+            const cragLink = cragLinks[crag];
+            
+            // Create clickable crag name
+            const cragNameElement = cragLink ? 
+                `<a href="${cragLink}" target="_blank" rel="noopener noreferrer" class="crag-name-link">${cragName}</a>` : 
+                `<span class="crag-name">${cragName}</span>`;
+            
             return `
                 <div class="crag-item">
-                    <span class="crag-name">${cragName}</span>
+                    ${cragNameElement}
                     <span class="crag-count">${count}</span>
                 </div>
             `;
         }).join('');
     }
-    
-
 }
 
 
@@ -680,8 +690,10 @@ function updateRoutesList(type) {
 
 function createRouteItem(route) {
     const routeName = route['Route Name'] || 'Unknown Route';
+    const routeLink = route['Route Link'] || '';
     const grade = cleanGrade(route['Route Grade']) || 'N/A';
     const cragName = route['Crag Name'] || 'Unknown Crag';
+    const cragLink = route['Crag Link'] || '';
     const country = route['Country'] || 'Unknown';
     const ascentType = route['Ascent Type'] || 'Unknown';
     const date = new Date(route['Ascent Date']).toLocaleDateString();
@@ -717,19 +729,29 @@ function createRouteItem(route) {
         return iconMap[ascentType] || '🧗';
     };
     
+    // Create clickable route name
+    const routeNameElement = routeLink ? 
+        `<a href="${routeLink}" target="_blank" rel="noopener noreferrer" class="route-name-link">${routeName}</a>` : 
+        `<span class="route-name">${routeName}</span>`;
+    
+    // Create clickable crag name
+    const cragNameElement = cragLink ? 
+        `<a href="${cragLink}" target="_blank" rel="noopener noreferrer" class="crag-name-link">${cragName}</a>` : 
+        `<span>${cragName}</span>`;
+    
     return `
         <div class="route-item ${ascentClass}">
             <div class="route-info">
                 <div class="route-header">
                     <div class="route-name-container">
                         <span class="ascent-icon" title="${ascentType}">${getAscentIcon(ascentType)}</span>
-                        <span class="route-name">${routeName}</span>
+                        ${routeNameElement}
                     </div>
                 </div>
                 <div class="route-details">
                     <span class="route-detail-item">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>${cragName}, ${country}</span>
+                        <span>${cragNameElement}, ${country}</span>
                     </span>
                     <span class="route-detail-item">
                         <i class="fas fa-calendar"></i>

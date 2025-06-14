@@ -247,14 +247,7 @@ function createPerformanceChart(type) {
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    display: true,
-                    position: 'top',
-                    labels: {
-                        color: '#718096',
-                        font: {
-                            size: 12
-                        }
-                    }
+                    display: false
                 },
                 tooltip: {
                     backgroundColor: 'rgba(0, 0, 0, 0.9)',

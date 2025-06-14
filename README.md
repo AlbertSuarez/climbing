@@ -30,6 +30,27 @@ The website files are static but the display is dynamic based on the CSV data. I
 5. Commit and push changes.
 6. See it live in [asuarez.dev/climbing](https://asuarez.dev/climbing)!
 
+## Logbook file structure
+
+The [logbook.csv](data/logbook.csv) file contains all the climbing data exported from TheCrag. Each row represents a single climbing ascent with the following key columns:
+
+- **Route Name**: The name of the climbing route
+- **Ascent Type**: Type of ascent (Onsight, Red point, Flash, Hang dog, Attempt, Send)
+- **Route Grade**: The difficulty grade of the route (e.g., 6a, 7b+, 6B for bouldering)
+- **Route Gear Style**: Climbing style (Sport, Boulder, Traditional)
+- **Route Height**: Height of the route in meters
+- **Route Stars**: Quality rating of the route (*, **, ***)
+- **Country**: Country where the route is located
+- **Crag Name**: Name of the climbing area/crag
+- **Ascent Date**: Date when the route was climbed
+- **Comment**: Personal notes and comments about the ascent
+- **Quality**: Personal quality assessment (Classic, Very Good, Good, etc.)
+- **With**: Climbing partners for the ascent
+
+The website dynamically processes this CSV data to generate statistics, charts, and visualizations of the climbing achievements. All personal climbing data is stored in this single file, making it easy to update and maintain.
+
+> The website manually exclude the climbs from indoor climbing gyms such as `Sharma Climbing BCN Gavá` or `Klättercentret Solna`.
+
 ## Fork policy
 
 Pretty simple. Feel free to fork from this repository and update your [logbook.csv](data/logbook.csv) file to get your stats website!

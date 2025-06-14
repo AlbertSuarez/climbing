@@ -271,7 +271,11 @@ function createPerformanceChart(type) {
                 x: {
                     stacked: true,
                     ticks: {
-                        color: '#718096'
+                        color: '#718096',
+                        font: {
+                            family: "'Crimson Text', serif",
+                            size: 12
+                        }
                     },
                     grid: {
                         display: false
@@ -282,7 +286,11 @@ function createPerformanceChart(type) {
                     beginAtZero: true,
                     ticks: {
                         stepSize: 1,
-                        color: '#718096'
+                        color: '#718096',
+                        font: {
+                            family: "'Crimson Text', serif",
+                            size: 12
+                        }
                     },
                     grid: {
                         color: 'rgba(0, 0, 0, 0.1)'
@@ -520,7 +528,11 @@ function createGradeDistributionChart(type) {
                     beginAtZero: true,
                     ticks: {
                         stepSize: 1,
-                        color: '#718096'
+                        color: '#718096',
+                        font: {
+                            family: "'Crimson Text', serif",
+                            size: 12
+                        }
                     },
                     grid: {
                         color: 'rgba(0, 0, 0, 0.1)'
@@ -528,7 +540,11 @@ function createGradeDistributionChart(type) {
                 },
                 x: {
                     ticks: {
-                        color: '#718096'
+                        color: '#718096',
+                        font: {
+                            family: "'Crimson Text', serif",
+                            size: 12
+                        }
                     },
                     grid: {
                         display: false
@@ -640,7 +656,11 @@ function createProgressionChart(type) {
                             const grade = Object.keys(gradeSystem).find(key => gradeSystem[key] === value);
                             return grade || value;
                         },
-                        color: '#718096'
+                        color: '#718096',
+                        font: {
+                            family: "'Crimson Text', serif",
+                            size: 12
+                        }
                     },
                     grid: {
                         color: 'rgba(0, 0, 0, 0.1)'
@@ -648,7 +668,11 @@ function createProgressionChart(type) {
                 },
                 x: {
                     ticks: {
-                        color: '#718096'
+                        color: '#718096',
+                        font: {
+                            family: "'Crimson Text', serif",
+                            size: 12
+                        }
                     },
                     grid: {
                         display: false

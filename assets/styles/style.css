@@ -214,6 +214,7 @@ body {
 
 .chart-container h3,
 .routes-container h3 {
+    font-family: 'Crimson Text', serif;
     font-size: 1.5rem;
     font-weight: 600;
     color: #2d3748;
@@ -292,6 +293,7 @@ body {
 }
 
 .route-name {
+    font-family: 'Crimson Text', serif;
     font-weight: 600;
     color: #2d3748;
     flex: 1;
@@ -352,6 +354,7 @@ body {
 }
 
 .route-grade {
+    font-family: 'Crimson Text', serif;
     font-weight: 700;
     font-size: 1.125rem;
     padding: 4px 12px;
@@ -365,6 +368,7 @@ body {
 /* Link Styles */
 .route-name-link,
 .crag-name-link {
+    font-family: 'Crimson Text', serif;
     color: #667eea;
     text-decoration: none;
     font-weight: 500;
@@ -408,6 +412,7 @@ body {
 }
 
 .stats-container h3 {
+    font-family: 'Crimson Text', serif;
     font-size: 1.25rem;
     font-weight: 600;
     color: #2d3748;
@@ -449,6 +454,7 @@ body {
 }
 
 .grade-badge {
+    font-family: 'Crimson Text', serif;
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     padding: 6px 12px;
@@ -466,6 +472,7 @@ body {
 }
 
 .performance-rate {
+    font-family: 'Crimson Text', serif;
     font-weight: 700;
     color: #667eea;
     font-size: 1.125rem;
@@ -498,12 +505,14 @@ body {
 }
 
 .crag-name {
+    font-family: 'Crimson Text', serif;
     font-weight: 500;
     color: #2d3748;
     flex: 1;
 }
 
 .crag-count {
+    font-family: 'Crimson Text', serif;
     font-weight: 600;
     color: #667eea;
     font-size: 0.875rem;
@@ -535,6 +544,7 @@ body {
 }
 
 .month-name {
+    font-family: 'Crimson Text', serif;
     font-weight: 600;
     color: #2d3748;
     font-size: 0.875rem;
@@ -542,6 +552,7 @@ body {
 }
 
 .month-average {
+    font-family: 'Crimson Text', serif;
     font-weight: 700;
     color: #667eea;
     font-size: 1.5rem;

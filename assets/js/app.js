@@ -75,7 +75,7 @@ async function initializeApp() {
   try {
     await loadClimbingData();
     processData();
-    updateStats();
+    await updateStats();
     createCharts();
     setupEventListeners();
     initializeScrollAnimations();
@@ -158,7 +158,7 @@ function processData() {
   boulderData.sort(sortByDate);
 }
 
-function updateStats() {
+async function updateStats() {
   // Total successful ascents (excluding indoor and unsuccessful attempts)
   const totalAscents = sportData.length + boulderData.length;
   document.getElementById('total-ascents').textContent = totalAscents;
@@ -178,9 +178,20 @@ function updateStats() {
   );
   document.getElementById('unique-crags').textContent = uniqueCrags.size;
 
-  // Last updated
-  const lastUpdated = new Date().toLocaleDateString();
-  document.getElementById('last-updated').textContent = lastUpdated;
+  // Last updated - get modification date of logbook.csv
+  try {
+    const response = await fetch('data/logbook.csv', { method: 'HEAD' });
+    const lastModified = response.headers.get('Last-Modified');
+    const lastUpdated = lastModified 
+      ? new Date(lastModified).toLocaleDateString()
+      : new Date().toLocaleDateString();
+    document.getElementById('last-updated').textContent = lastUpdated;
+  } catch (error) {
+    console.warn('Could not get file modification date:', error);
+    // Fallback to current date
+    const lastUpdated = new Date().toLocaleDateString();
+    document.getElementById('last-updated').textContent = lastUpdated;
+  }
 
   // Update new detailed sections
   updateGradePerformance();
